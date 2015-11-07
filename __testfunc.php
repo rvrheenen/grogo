@@ -46,14 +46,14 @@
 		}
 	}
 
-	function db_connect(){
-		$username 	= "grogo";
-		$password 	= "#fusehack";
-		$dbname 	= "grogo_db";
-		
+	function db_connect(){		
 		static $connection;
 		
 		if(!isset($connection)) {
+			$db = parse_ini_file("database.ini");
+			$username 	= $db['username'];
+			$password 	= $db['password'];
+			$dbname 	= $db['dbname'];
 			$connection = mysqli_connect('localhost',$username, $password, $dbname);
 		}
 		return $connection;
