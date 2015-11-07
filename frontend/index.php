@@ -17,7 +17,7 @@
             <div class="item active">
                 <div class="fill" style="background-image:url('images/shopfast.jpg');"></div>
                 <div class="carousel-caption">
-                    <img src='images/logo.png'/>
+
                     <h2>Shop Fast</h2>
                 </div>
             </div>
@@ -34,7 +34,13 @@
                 </div>
             </div>
         </div>
-
+        
+        
+        <div class="main-text hidden-xs">
+          <div class="col-md-12 text-center">
+              <img src='images/logo_small.png' />
+          </div>
+        </div>
         <!-- Controls -->
         <a class="left carousel-control" href="#myCarousel" data-slide="prev">
             <span class="icon-prev"></span>
