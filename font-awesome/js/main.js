@@ -37,7 +37,7 @@ function saveCart(uid){
 }
 
 function getCartContent(cartID){
-    cart=toArray(call_Server('GET','?action=getcartcontent&value='+cartID));
+    return(call_Server('GET','?action=getcartcontent&value='+cartID));
 }
 
 function add_to_cart(item){
@@ -98,10 +98,18 @@ function cartarr_creator(){
     } 
     return (cartarr);
 }
+
+function loadCart(cartid){
+  cart=[];
+  var raw_data=JSON.parse(getCartContent(cartid));
+  console.log(raw_data);
+  for (i=0; i<raw_data.length;i++){
+        cart.push([raw_data[i][""],raw_data[i][""],raw_data[i][""],raw_data[i][""],raw_data[i][""],raw_data[i][""],raw_data[i][""]]);
+    } 
+  }
 //run
 CATEGORIES=catarr_creator();
 SAVED_CARTS=cartarr_creator();
-alert(SAVED_CARTS);
 
 //alert(CATEGORIES);
 

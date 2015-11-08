@@ -20,7 +20,8 @@ function getCategories(){
 
 function getSearchResults(){
     var searchvalue = document.getElementById("fsearch").value;
-    return (call_Server('GET','?action=searchproductname&value='+searchvalue));
+    listr = call_Server('GET','?action=searchsubcat&value='+searchvalue);
+    alert (listr);
 }
 // cart- functions
 function getCarts(uid){
@@ -131,36 +132,11 @@ function displayMainContainer(main_list){
     new_entry=import_html("dep/main_container_entry.html");
     full_entry="";
     for (i=0;i<main_list.length;i++){
-        full_entry+=new_entry.replace("[packaging]",main_list[i][1]).replace("[weight]",main_list[i][3]).replace("[brand-name]",main_list[i][1]).replace("[price]",main_list[i][6]).replace("[item-placeholder]","['" + main_list[i].join("','") + "']")
+        full_entry+=new_entry.replace("[packaging]",main_list[i][1]).replace("[weight]",main_list[i][3]).replace("[brand-name]",main_list[i][1]).replace("[price]",main_list[i][6]).replace("[item-placeholder]","["+main_list[i].toString()+"]")
     }
     document.getElementById("main_container").innerHTML=full_entry;
     
 }
-
-function cheapest(){
-    var list=[];
-    var raw_data=JSON.parse(getSearchResults())["results"];
-    for (i=0; i<raw_data.length;i++){
-        list.push([raw_data[i]["product_id"],raw_data[i]["product_brand"],raw_data[i]["product_weight"],raw_data[i]["product_packaging"],raw_data[i]["subcategory_id"],raw_data[i]["supermarket_name"],raw_data[i]["price"]]);
-    } 
-    var prices=[];
-    for (i=0; i<list.length; i++){
-        prices.push(parseInt(list[i][6]));
-    }
-    alert(prices);
-    var cheapest = prices.indexOf(Math.min.apply(Math, prices));
-    alert(list[cheapest]);
-    add_to_cart(list[cheapest]);
-}
-
-function investigate(){
-    var list=[];
-    var raw_data=JSON.parse(getSearchResults())["results"];
-    for (i=0; i<raw_data.length;i++){
-        list.push([raw_data[i]["product_id"],raw_data[i]["product_brand"],raw_data[i]["product_weight"],raw_data[i]["product_packaging"],raw_data[i]["subcategory_id"],raw_data[i]["supermarket_name"],raw_data[i]["price"]]);
-    } 
-    displayMainContainer(list);
-    }
 //run
 CATEGORIES=catarr_creator();
 SAVED_CARTS=cartarr_creator();
@@ -179,7 +155,7 @@ window.addEventListener("keypress", function (e) {
     //display(typin, "maincontainer");
     var key = e.which || e.keyCode;
     if (key === 13) { // 13 is enter
-      investigate();
+      getSearchResults();
     }});
     
     

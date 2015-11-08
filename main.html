@@ -34,23 +34,34 @@
       <div class="row">
         <div id="sideline_left" class="col-sm-3 col-md-3"> </div>
         <div class="col-sm-9 col-md-9">
+        <div class="row">
+          <div class="col-sm-12">
             <div class="panel panel-default">
           <div class="panel-heading">
             <h4><i class="fa fa-fw fa-search"></i> Search for products</h4>
           </div>
-          
+
           
           <form class="form-horizontal" role="form">
             <div class="form-group">
-              <input type="text" class="form-control" id="search_input" placeholder="Search...">
+              <input type="text" class="form-control" id="fsearch" placeholder="Search...">
               <div class="buttons">
-                <button type="button" id="select_cheapest"><a href='#'>Take cheapest product</a></button>
-                <button type="button" id="select_search"><a href='#'>Search for product</a></button>
+                <button type="button" id="select_cheapest" onclick="cheapest()"><a href='#'>Take cheapest product</a></button>
+                <button type="button" id="select_search" onclick="investigate()"><a href='#'>Search for product</a></button>
               </div>
             </div>
           </form>
+          </div>
+          </div>
+          <div class="row">
+          <div class="col-sm-12 tablecolumn">
+            <table class="table table-hover table-striped" align="center" border=1 id="main_container">
+    </table>
+    </div>
+          </div>
         </div>
     </div>
+
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -58,30 +69,30 @@
 <script>
   $(function() {
     var availableTags = [
-      "ActionScript",
-      "AppleScript",
-      "Asp",
-      "BASIC",
-      "C",
-      "C++",
-      "Clojure",
-      "COBOL",
-      "ColdFusion",
-      "Erlang",
-      "Fortran",
-      "Groovy",
-      "Haskell",
-      "Java",
-      "JavaScript",
-      "Lisp",
-      "Perl",
-      "PHP",
-      "Python",
-      "Ruby",
-      "Scala",
-      "Scheme"
+	"Beer",
+	"Natural juice",
+	"Carbonated drinks",
+	"Water",
+	"Wine",
+	"Potatoes",
+	"Tomatoes",
+	"Carrots",
+	"Lettuce",
+	"Banana",
+	"Apples",
+	"Oranges",
+	"Milk",
+	"Butter",
+	"Cheese",
+	"Minced beef",
+	"Chicken breast",
+	"Salmon fillet",
+	"Bread",
+	"Croissant",
+	"Tuna",
+	"Canned vegetables"
     ];
-    $( "#search_input" ).autocomplete({
+    $( "#fsearch" ).autocomplete({
       source: availableTags,
     });
   });

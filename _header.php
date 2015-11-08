@@ -74,62 +74,24 @@
 			                  }
 			                ?>  
                     class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-shopping-cart"></span> 7 - Shopping Cart <b class="caret"></b></a>
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Saved Carts <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                           <li>
-                  <span class="item">
-                    <span class="item-left">
-                        <span class="item-info">
-                            <span>Item name</span>
-                            <span>23$</span>
-                        </span>
-                    </span>
-                    <span class="item-right">
-                        <button class="btn btn-xs btn-danger pull-right">x</button>
-                    </span>
-                </span>
-              </li>
-              <li>
-                  <span class="item">
-                    <span class="item-left">
-                        <span class="item-info">
-                            <span>Item name</span>
-                            <span>23$</span>
-                        </span>
-                    </span>
-                    <span class="item-right">
-                        <button class="btn btn-xs btn-danger pull-right">x</button>
-                    </span>
-                </span>
-              </li>
-              <li>
-                  <span class="item">
-                    <span class="item-left">
-                        <span class="item-info">
-                            <span>Item name</span>
-                            <span>23$</span>
-                        </span>
-                    </span>
-                    <span class="item-right">
-                        <button class="btn btn-xs btn-danger pull-right">x</button>
-                    </span>
-                </span>
-              </li>
-              <li>
-                  <span class="item">
-                    <span class="item-left">
-                        <span class="item-info">
-                            <span>Item name</span>
-                            <span>23$</span>
-                        </span>
-                    </span>
-                    <span class="item-right">
-                        <button class="btn btn-xs btn-danger pull-right">x</button>
-                    </span>
-                </span>
-              </li>
+                         [scartlist-placeholder]
+                            <li class="divider"></li>
+                            <li><a class="text-center" href="">Save current cart</a></li>
+                        </ul>
+                    </li>
+                    <li <?php
+                        if (substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1) === "index.php"){
+			                    echo  'class="hidden"';
+			                  }
+			                ?>  class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-shopping-cart"></span>Shopping Cart <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                     [cartlist-placeholder]
               <li class="divider"></li>
-              <li><a class="text-center" href="">View Cart</a></li>
+              <li><a class="text-center" onclick="saveCart(uid)">Save Cart</a></li>
+              <li><a class="text-center" href="maps.php">Generate Route</a></li>
                         </ul>
                     </li>
                 </ul>

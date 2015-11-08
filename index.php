@@ -93,7 +93,7 @@
             </div>
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
-                <input type="submit" class="btn btn-default"><a href="/main.html?user=#inputEmail3">Sign in</a></input> or <a href="/register.php">Register</a>
+                <input type="submit" class="btn btn-default"></input> or <a href="/register.php">Register</a>
               </div>
             </div>
           </form>

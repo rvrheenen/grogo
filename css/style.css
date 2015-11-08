@@ -41,6 +41,16 @@ body{margin-top:50px; background: #ffefcf;}
     color: #FFF;
 }
 
+#fsearch {
+ margin-left: 20px !important;
+ }
+
+.tablecolumn
+{
+ width: 100%;
+ margin-left: 10px !important;
+ }
+
 button {
  background: #45ba1a !important;
  box-shadow: inset -1px -10px 15px 2px rgba(0,0,0,0.4) !important;
@@ -55,8 +65,14 @@ button {
  
 .buttons {
   margin: auto;
+  margin-top: 5px;
   text-align: center;
   }
+
+.searchbar {
+ width: 100% !important;
+ margin-left: 20px !important;
+}
 
 .form-control {
  width: 95% !important;

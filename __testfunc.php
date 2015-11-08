@@ -4,6 +4,9 @@
 		case 'getcat':
 			$toreturn = getAllSubCategories();
 			break;
+		case 'searchproducts':
+			$toreturn = searchProducts($_GET['value']);
+			break;
 		case 'searchsubcat':
 			$toreturn = searchSubCategories($_GET['value']);
 			break;
@@ -29,6 +32,19 @@
 	
 	echo json_encode($toreturn);
 	exit();
+	
+	function searchProducts($subcatid){
+		$query = sprintf("SELECT * 	FROM products WHERE products.subcategory_id = %u", int($subcatid));
+		
+		$results = do_query($query);
+
+		if ($results){
+			$rows = parse_results($results);
+			return array("status"=>1, "title"=>"Success", "msg"=>"Succesfully retrieved products.", "results"=>$rows);
+		} else {
+			return array("status"=>0, "title"=>"Failure", "msg"=>"Failed to connect to server.");
+		}
+	}
 
 	function searchProductCheap($value){
 		$product = mysqli_real_escape_string(db_connect(), $value);

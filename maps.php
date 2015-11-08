@@ -16,7 +16,7 @@
           <div class='row'> 
             <div id="map"></div>
           </div>
-          <div class='row'>
+<!--          <div class='row'>
             <div id="button_holder">
               <a href='#' class="button round" id="button_lidl" onclick="addMarkers('lidl')">Find Lidl's</a>
               <a href='#' class="button round" id="button_ah" onclick="addMarkers('albert heijn')">Find Albert Heijns</a>
@@ -25,158 +25,183 @@
 			        <a href='#' class="button round" id="button_clear" onclick="clearMarkers()">Clear markers</a>
 			        <a href='#' class="button round" id="button_route">Calculate route</a>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class='col_md_2'></div>
       </div>
     </div>
     <script type="text/javascript">
-var myLatLng = {lat: 52.342918, lng: 4.8280230};
-var map;
-var markers = [];
-var imageYellow = 'images/yellow-dot.png';
-var imageRed = 'images/red-dot.png';
-var waypoints = []
+		var myLatLng = {lat: 52.342918, lng: 4.8280230};
+		var map;
+		var markers = [];
+		var imageYellow = 'images/yellow-dot.png';
+		var imageRed = 'images/red-dot.png';
+		var waypoints = [];
+		var lidl = {lat:52.348448, lng:4.838705};
+		var dirk = {lat:52.346083, lng:4.811755};
+
+		function addMarkers(searchword) {
+		deleteMarkers();
+		var service = new google.maps.places.PlacesService(map);
+		  service.textSearch({
+		    location: myLatLng,
+		    radius: 500,
+		    query: [searchword]
+		  }, callback);
+		  console.log(markers);
+		}
+
+		function initMap() {
+		  var directionsService = new google.maps.DirectionsService;
+		  var directionsDisplay = new google.maps.DirectionsRenderer;
+		  map = new google.maps.Map(document.getElementById('map'), {
+		    center: myLatLng,
+		    zoom: 13
+		  });
+		  directionsDisplay.setMap(map);
+		  
+		  var onChangeHandler = function() {
+		    calculateAndDisplayRoute(directionsService, directionsDisplay);
+		  };
+		  //document.getElementById('button_route').addEventListener('click', onChangeHandler);
+
+		  var marker = new google.maps.Marker({
+		      map: map,
+		      position: myLatLng,
+		      animation:google.maps.Animation.DROP,
+		      title: 'Current Location',
+			  icon: imageRed
+		  });
+		      var marker1 = new google.maps.Marker({
+		      map: map,
+		      position: lidl,
+		      animation:google.maps.Animation.DROP,
+		      title: 'Current Location',
+			  icon: imageYellow
+			});
+			    var marker2 = new google.maps.Marker({
+		      map: map,
+		      position: dirk,
+		      animation:google.maps.Animation.DROP,
+		      title: 'Current Location',
+			  icon: imageYellow
+		  });
+		      waypoints.push({
+		      location: marker1.position,
+		      stopover: true
+		    });
+		      waypoints.push({
+		      location: marker2.position,
+		      stopover: true
+		    });
+		    calculateAndDisplayRoute(directionsService, directionsDisplay);
+		}
+
+		function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+		  directionsService.route({
+		    origin: myLatLng,
+		    destination: myLatLng,
+		    waypoints: waypoints,
+		    optimizeWaypoints: true,
+		    travelMode: google.maps.TravelMode.WALKING
+		  }, function(response, status) {
+		    if (status === google.maps.DirectionsStatus.OK) {
+		      directionsDisplay.setDirections(response);
+		    } else {
+		      window.alert('Directions request failed due to ' + status);
+		    }
+		  });
+		}
+
+		function callback(results, status) {
+		  if (status === google.maps.places.PlacesServiceStatus.OK) {
+		    for (var i = 0; i < results.length; i++) {
+		      createMarker(results[i]);
+		    }
+		  }
+		}
 
 
-function addMarkers(searchword) {
-deleteMarkers();
-var service = new google.maps.places.PlacesService(map);
-  service.textSearch({
-    location: myLatLng,
-    radius: 500,
-    query: [searchword]
-  }, callback);
- }
-function initMap() {
-  var directionsService = new google.maps.DirectionsService;
-  var directionsDisplay = new google.maps.DirectionsRenderer;
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: myLatLng,
-    zoom: 13
-  });
-  directionsDisplay.setMap(map);
-  
-  var onChangeHandler = function() {
-    find_closest_marker();
-    calculateAndDisplayRoute(directionsService, directionsDisplay);
-  };
-  document.getElementById('button_route').addEventListener('click', onChangeHandler);
 
-  var marker = new google.maps.Marker({
-      map: map,
-      position: myLatLng,
-      animation:google.maps.Animation.BOUNCE,
-      title: 'Current Location',
-	    icon: imageRed
-  });
-  
-  var stores={name1: 'lidl', name2: 'dirk'};
-  
-  calculateRoutes(stores);
-}
+		function createMarker(place) {
+		  var placeLoc = place.geometry.location;
+		  var marker = new google.maps.Marker({
+		    map: map,
+		    position: place.geometry.location,
+		    animation:google.maps.Animation.DROP,
+			  icon: imageYellow,
+		  });
+		  markers.push(marker);
+		}
 
-function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-  directionsService.route({
-    origin: myLatLng,
-    destination: myLatLng,
-    waypoints: waypoints,
-    optimizeWaypoints: true,
-    travelMode: google.maps.TravelMode.WALKING
-  }, function(response, status) {
-    if (status === google.maps.DirectionsStatus.OK) {
-      directionsDisplay.setDirections(response);
-    } else {
-      window.alert('Directions request failed due to ' + status);
-    }
-  });
-}
+		// Sets the map on all markers in the array.
+		function setMapOnAll(map) {
+		  for (var i = 0; i < markers.length; i++) {
+		    markers[i].setMap(map);
+		  }
+		}
 
-function callback(results, status) {
-  if (status === google.maps.places.PlacesServiceStatus.OK) {
-    for (var i = 0; i < results.length; i++) {
-      createMarker(results[i]);
-    }
-  }
-}
+		// Removes the markers from the map, but keeps them in the array.
+		function clearMarkers() {
+		  setMapOnAll(null);
+		}
 
-function createMarker(place) {
-  var placeLoc = place.geometry.location;
-  var marker = new google.maps.Marker({
-    map: map,
-    position: place.geometry.location,
-    animation:google.maps.Animation.DROP,
-	  icon: imageYellow,
-  });
-  markers.push(marker);
-}
+		// Shows any markers currently in the array.
+		function showMarkers() {
+		  setMapOnAll(map);
+		}
 
-// Sets the map on all markers in the array.
-function setMapOnAll(map) {
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(map);
-  }
-}
+		// Deletes all markers in the array by removing references to them.
+		function deleteMarkers() {
+		  clearMarkers();
+		  markers = [];
+		}
 
-// Removes the markers from the map, but keeps them in the array.
-function clearMarkers() {
-  setMapOnAll(null);
-}
+		function rad(x) {
+			return x*Math.PI/180;
+		}
 
-// Shows any markers currently in the array.
-function showMarkers() {
-  setMapOnAll(map);
-}
+		function find_closest_marker() {
+		    var lat = myLatLng['lat'];
+		    var lng = myLatLng['lng'];
+		    var R = 6371; // radius of earth in km
+		    var distances = [];
+		    var closest = -1;
+		    for( i=0;i<markers.length; i++ ) {
+		        var mlat = markers[i].position.lat();
+		        var mlng = markers[i].position.lng();
+		        var dLat  = rad(mlat - lat);
+		        var dLong = rad(mlng - lng);
+		        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+		            Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong/2) * Math.sin(dLong/2);
+		        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+		        var d = R * c;
+		        distances[i] = d;
+		        
+		        if ( closest == -1 || d < distances[closest] ) {
+		            closest = i;
+		        }
+		    }
 
-// Deletes all markers in the array by removing references to them.
-function deleteMarkers() {
-  clearMarkers();
-  markers = [];
-}
+		    waypoints.push({
+		      location: markers[closest].position,
+		      stopover: true
+		    });
+		}
 
-function rad(x) {return x*Math.PI/180;}
-function find_closest_marker() {
-    var lat = myLatLng['lat'];
-    var lng = myLatLng['lng'];
-    var R = 6371; // radius of earth in km
-    var distances = [];
-    var closest = -1;
-    for( i=0;i<markers.length; i++ ) {
-        var mlat = markers[i].position.lat();
-        var mlng = markers[i].position.lng();
-        var dLat  = rad(mlat - lat);
-        var dLong = rad(mlng - lng);
-        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong/2) * Math.sin(dLong/2);
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        var d = R * c;
-        distances[i] = d;
-        if ( closest == -1 || d < distances[closest] ) {
-            closest = i;
-        }
-    }
-    console.log(markers[closest]);
-    waypoints.push({
-      location: markers[closest].position,
-      stopover: true
-    });
-}
-
-function calculateRoutes(stores) {
-  for each (var store in stores) {
-    addMarkers(store);
-    find_closest_marker();
-    console.log(waypoints);
-  }
-  
-}  
-    
-    
-
-    </script>
-    <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMmnSk7Zonbe_ysxxRnomG0Bm09DsmXSg&libraries=places&callback=initMap">
-    </script>
+		function calculateRoutes(stores) {
+		  var arrayLength = stores.length;
+		  for (var i = 0; i < arrayLength; i++) {
+		    addMarkers(stores[i]);
+		    find_closest_marker();
+		    console.log(waypoints);
+		  }
+		  deleteMarkers();
+		}
+</script>
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMmnSk7Zonbe_ysxxRnomG0Bm09DsmXSg&libraries=places&callback=initMap">
+</script>
     
     <!-- jQuery -->
 <script src="js/jquery.js"></script>
