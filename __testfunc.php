@@ -74,16 +74,20 @@
 		
 		$cartid = do_query($query);
 		
+		$results = parse_results($cartid);
+		
 		$products = explode(",",$value);
 		
 		foreach ($products as $productid){
-			$insert = sprintf("INSERT INTO cart_details (cart_id, product_id) VALUES (%u, %u)", $cartid, (int)$productid);
+			$insert = sprintf("INSERT INTO cart_details (cart_id, product_id) VALUES (%u, %u)", $results[0][key($results[0])], (int)$productid);
 			
 			$result = do_query($insert);
 			
 			if (!$result){
 				$ok = FALSE;
-				return array ("status"=>0, "title"=>"Failure", "msg"=>"Failed to connect to server.");
+				$query = sprintf("SELECT delete_cart(%u)", $results[0][key($results[0])]);
+				$result = do_query($query);
+				return array ("status"=>0, "title"=>"Failure", "msg"=>"Failed to save the cart.");
 			}
 		}
 		
@@ -91,29 +95,30 @@
 			return array("status"=>1, "title"=>"Success", "msg"=>"Cart saved successful.");
 		}
 	}
-
+	
 	function getCartContent($cartid){
-		$query = sprintf("SELECT cd.product_id FROM cart_details cd WHERE cd.user_id = %u", (int)$cartid);
+		$query = sprintf("SELECT cd.product_id FROM cart_details cd WHERE cd.cart_id = %u", (int)$cartid);
 		
 		$results = do_query($query);
 		
 		if ($results){
 			$productids = parse_results($results);
 			
-			$rows = "";
+			$products = array();
 			
 			foreach ($productids as $product_id){
-				$query = sprintf("SELECT * FROM products p WHERE p.product_id = %u", (int)$product_id);
-				$result = do_query($query);
+
+				$query = sprintf("SELECT * FROM products p WHERE p.product_id = %u", $product_id[key($product_id)]);
 				
-				if ($result){
-					$rows .= $result . ",";
+				$product = parse_results(do_query($query));
+				
+				if ($product){
+					$products[] = $product;
 				} else {
 					return array("status"=>0, "title"=>"Failure", "msg"=>"Failed to retrieve cart product");
 				}
 			}
-			
-			return array("status"=>1, "title"=>"Success", "msg"=>"Succesfully get cart content", "results"=>$rows);
+			return array("status"=>1, "title"=>"Success", "msg"=>"Succesfully got cart content", "results"=>$products);
 		} else {
 			return array("status"=>0, "title"=>"Failure", "msg"=>"Failed to connect to server.");
 		}
@@ -222,7 +227,7 @@
 		    	if ($result[$keys[0]] == $prevRow){ //if this category is same as previous
 		    		$row[] = $result[$keys[1]];
 		    	} else {
-		    	$rows[]  = array($result[$keys[0]] => $row);
+		    	$rows[]  = array($prevRow => $row);
 		    	$prevRow = $result[$keys[0]];
 		    	$row 	 = array();
 		    	$row[]   = $result[$keys[1]];

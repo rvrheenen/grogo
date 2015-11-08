@@ -1,20 +1,59 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html>
-  <head>
-    <title>GroGo</title>
-    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Grogo - Shop smart!</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap.css.map" rel="stylesheet">
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.css.map" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <link href="css/style.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <script type="text/JavaScript" src="js/importmaster.js"></script>
     <script type="text/JavaScript" src="js/centreq_sync.js"></script>
     <script type="text/JavaScript" src="js/toArray.js"></script>
     <script type="text/JavaScript" src="js/main.js"></script>
-  </head>
-  <body>
-  Main page
-    <table>
-      <tr></tr>
-      <tr></tr>
-    </table>
-    <div><input id="fsearch" type="text"></div>
-    <div></div>
-    <div><input id="cartgo" type="submit"></div>
-  </body>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="nav">
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div id="sideline_left" class="col-sm-3 col-md-3"> </div>
+        <div class="col-sm-9 col-md-9">
+            <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4><i class="fa fa-fw fa-search"></i> Search for products</h4>
+          </div>
+          
+          
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <input type="email" class="form-control" id="search_input" placeholder="Search...">
+              <div class="buttons">
+                <button type="button" id="select_cheapest"><a href='#'>Take cheapest product</a></button>
+                <button type="button" id="select_search"><a href='#'>Search for product</a></button>
+              </div>
+            </div>
+          </form>
+        </div>
+    </div>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 </html>

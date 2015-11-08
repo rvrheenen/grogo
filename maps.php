@@ -4,69 +4,69 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-	<!-- Latest compiled JavaScript -->
-	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <style type="text/css">
+      html, body { height: 100%; margin: 0; padding: 0; }
+      #map { height: 50%; width: 50%; margin: 50px; border: #000 1px solid; }
+      #button_holder { height: 50%; width: 50%; margin: auto; }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="button_holder">
+      <button id="button_lidl" onclick="addMarkers('lidl')">Vind Lidl's</button>
+      <button id="button_ah" onclick="addMarkers('albert heijn')">Vind Albert Heijns</button>
+      <button id="button_aldi" onclick="addMarkers('aldi')">Vind Aldi's</button>
+    </div>
+    <script type="text/javascript">
+var myLatLng = {lat: 52.342965, lng: 4.829200};
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!-- Icons -->
-    <link href="scripts/icons/general/stylesheets/general_foundicons.css" media="screen" rel="stylesheet" type="text/css" />  
-    <link href="scripts/icons/social/stylesheets/social_foundicons.css" media="screen" rel="stylesheet" type="text/css" />
-    <!--[if lt IE 8]>
-        <link href="scripts/icons/general/stylesheets/general_foundicons_ie7.css" media="screen" rel="stylesheet" type="text/css" />
-        <link href="scripts/icons/social/stylesheets/social_foundicons_ie7.css" media="screen" rel="stylesheet" type="text/css" />
-    <![endif]-->
+function addMarkers(searchword) {
+var service = new google.maps.places.PlacesService(map);
+  service.textSearch({
+    location: myLatLng,
+    radius: 500,
+    query: [searchword]
+  }, callback);
+ }
+var map;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: myLatLng,
+    zoom: 13
+  });
 
-    <link href="http://fonts.googleapis.com/css?family=Chewy" rel="stylesheet" type="text/css">
-    <link href="http://fonts.googleapis.com/css?family=Abel" rel="stylesheet" type="text/css">
-    <link href="http://fonts.googleapis.com/css?family=Terminal+Dosis+Light" rel="stylesheet" type="text/css">
-    <link href="http://fonts.googleapis.com/css?family=Maven+Pro" rel="stylesheet" type="text/css">
+var marker = new google.maps.Marker({
+    map: map,
+    position: myLatLng,
+    animation:google.maps.Animation.BOUNCE,
+    title: 'Current Location'
+  });
+}
 
-    <title>closest</title>
-</head>
-<body>
-	<div class="span8" id="mapholder" style="margin-left:20%"></div>
-</body>
-<script type="text/javascript">
-	var iframe    = document.createElement("iframe");
-	iframe.width  = "80%";
-	iframe.height = "800px";	
-	// document.body.appendChild(iframe);
-	document.getElementById("mapholder").appendChild(iframe);
-	var doc = iframe.contentWindow || iframe.contentDocument;
-	if (doc.document) { doc = doc.document;}
+function callback(results, status) {
+  if (status === google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      createMarker(results[i]);
+    }
+  }
+}
 
-	var func = "function showNewMap() { "+
-	    "var mapContainer =  document.createElement('div');"+
-	    "mapContainer.setAttribute('style','width: 100%; height: 100%');"+
-	    "document.body.appendChild(mapContainer);"+
+function createMarker(place) {
+  var placeLoc = place.geometry.location;
+  var marker = new google.maps.Marker({
+    map: map,
+    position: place.geometry.location,
+    animation:google.maps.Animation.DROP
+  });
+  
+}
 
-	    "var mapOptions = {"+ 
-	    "    center: new google.maps.LatLng(52.3427658, 4.8216493),"+
-	    "    zoom: 15,"+
-	    "   mapTypeId: google.maps.MapTypeId.ROADMAP"+
-	    "};"+
-
-	    "var map = new google.maps.Map(mapContainer,mapOptions);"+
-	"}";
-
-	var scriptMap = doc.createElement('script');
-	scriptMap.type = 'text/javascript';
-	var newContent = document.createTextNode(func);
-	scriptMap.appendChild(newContent);
-	doc.getElementsByTagName('head')[0].appendChild(scriptMap);
-
-	var script = doc.createElement('script');
-	script.type = 'text/javascript';
-	script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&' +'callback=window.showNewMap';
-	doc.getElementsByTagName('head')[0].appendChild(script);
-</script>
-
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMmnSk7Zonbe_ysxxRnomG0Bm09DsmXSg&libraries=places&callback=initMap">
+    </script>
+  </body>
 </html>
