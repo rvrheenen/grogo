@@ -23,7 +23,7 @@
               <a href='#' class="button round" id="button_jumbo" onclick="addMarkers('jumbo')">Find Jumbo's</a>
 			        <a href='#' class="button round" id="button_dirk" onclick="addMarkers('dirk')">Find Dirk's</a>
 			        <a href='#' class="button round" id="button_clear" onclick="clearMarkers()">Clear markers</a>
-			        <a href='#' class="button round" id="button_route" onclick="calculateRoute()">Calculate route</a>
+			        <a href='#' class="button round" id="button_route">Calculate route</a>
             </div>
           </div>
         </div>
@@ -31,15 +31,13 @@
       </div>
     </div>
     <script type="text/javascript">
-var myLatLng = {lat: 52.342965, lng: 4.829200};
+var myLatLng = {lat: 52.342918, lng: 4.8280230};
 var map;
 var markers = [];
 var imageYellow = 'images/yellow-dot.png';
 var imageRed = 'images/red-dot.png';
+var waypoints = []
 
-function calculateRoute() {
-  find_closest_marker();
-}
 
 function addMarkers(searchword) {
 deleteMarkers();
@@ -60,6 +58,7 @@ function initMap() {
   directionsDisplay.setMap(map);
   
   var onChangeHandler = function() {
+    find_closest_marker();
     calculateAndDisplayRoute(directionsService, directionsDisplay);
   };
   document.getElementById('button_route').addEventListener('click', onChangeHandler);
@@ -69,15 +68,21 @@ function initMap() {
       position: myLatLng,
       animation:google.maps.Animation.BOUNCE,
       title: 'Current Location',
-	  icon: imageRed
+	    icon: imageRed
   });
+  
+  var stores={name1: 'lidl', name2: 'dirk'};
+  
+  calculateRoutes(stores);
 }
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   directionsService.route({
     origin: myLatLng,
-    destination: find_closest_marker(),
-    travelMode: google.maps.TravelMode.DRIVING
+    destination: myLatLng,
+    waypoints: waypoints,
+    optimizeWaypoints: true,
+    travelMode: google.maps.TravelMode.WALKING
   }, function(response, status) {
     if (status === google.maps.DirectionsStatus.OK) {
       directionsDisplay.setDirections(response);
@@ -150,8 +155,23 @@ function find_closest_marker() {
             closest = i;
         }
     }
-    return(markers[closest].position);
+    console.log(markers[closest]);
+    waypoints.push({
+      location: markers[closest].position,
+      stopover: true
+    });
 }
+
+function calculateRoutes(stores) {
+  for each (var store in stores) {
+    addMarkers(store);
+    find_closest_marker();
+    console.log(waypoints);
+  }
+  
+}  
+    
+    
 
     </script>
     <script async defer

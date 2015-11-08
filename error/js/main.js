@@ -2,10 +2,11 @@
 Main Page
 result_element=[productID, productBrand, broductWeight, productPackaging, subcategoryID, supermarketID, price]
 CATEGORIES:
+GetCart=> [[CartID1,userID1,name1],[C2,UID2,N2]...]
 */
 
 var CATEGORIES, listr, cart=[];
-var uid;
+var uid, SAVED_CARTS;
 uid="902909309";
 CATEGORIES=[["Vegetables",["Potatoes", "Tomatoes","Carrots"]],["Fruits",["Apples","Oranges","Cherries"]],["Beverages",["Beer","Juice","Schnaps"]]];
 var numbers=["One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven"]
@@ -23,14 +24,14 @@ function getSearchResults(){
 }
 // cart- functions
 function getCarts(uid){
-    return (call_Server('GET','?action=getcarts'+uid));
+    return (call_Server('GET','?action=getcarts&value='+uid));
 }
 
 function saveCart(uid){
     var name = prompt("Enter Cart name: ","");
     var as_string;
     for (i=0;i<cart.length;i++){
-      as_string=as_string+","+cart[i];
+        as_string=as_string+","+cart[i];
     }
     return (call_Server('GET','?action=savecarts&name='+name+'&value='+as_string+'&user='+uid));
 }
@@ -41,17 +42,24 @@ function getCartContent(cartID){
 
 function add_to_cart(item){
     cart.push(item);
-    var full_entry;
-    for (i=0;i<cart.length;i++)
-    {
-    full_entry+=import_html("dep/nav_cart_entry.html").replace("[name-placeholder]",cart[i][1]).replace("[price-placeholder]",cart[i][6]);
+    var full_entry="";
+    var new_entry=import_html("dep/nav_cart_entry.html");
+    for (i=0;i<cart.length;i++){
+        full_entry+=new_entry.replace("[name-placeholder]",cart[i][1]).replace("[price-placeholder]",cart[i][6]);
     }
-    new_nav=import_html("dep/nav.html").replace("[cartlist-placeholder]",full_entry);
-    alert (document.getElementById("nav").innerHTML);
+    new_nav=document.getElementById("nav").innerHTML.replace("[cartlist-placeholder]",full_entry);
     document.getElementById("nav").innerHTML=new_nav;
-
 }
 
+function load_saved_cart_list(cartlist){
+    var full_entry="";
+    var new_entry=import_html("dep/nav_scarts_entry.html");
+    for (i=0;i<cartlist.length;i++){
+        full_entry+=new_entry.replace("[cartname-placeholder]",cartlist[i][2]).replace("[cartid-placeholder]",cartlist[i][0]);
+    }
+    new_nav=document.getElementById("nav").innerHTML.replace("[scartlist-placeholder]",full_entry);
+    document.getElementById("nav").innerHTML=new_nav; 
+}
 
 
 //display
@@ -73,12 +81,33 @@ function mk_full_sideline(categories_in){
      return (full_sideline);
      }
 // run
-CATEGORIES=getCategories();
-//add_to_cart([109847, "Green Bananasauce", "500g", "in a black box", 234987982, 00723, "10"]);
-alert(cart);
-console.log(JSON.parse(CATEGORIES)["results"]);
+function catarr_creator(){
+    var catarr=[];
+    var raw_data = JSON.parse(getCategories())["results"];
+    for (i=0; i<raw_data.length;i++){
+        catarr.push([Object.keys(raw_data[i])[0],raw_data[i][Object.keys(raw_data[i])[0]]]);
+    } 
+    return (catarr);
+} 
+
+function cartarr_creator(){
+    var cartarr=[];
+    var raw_data = JSON.parse(getCarts(uid))["results"];
+    for (i=0; i<raw_data.length;i++){
+        cartarr.push([raw_data[i]["cart_id"],raw_data[i]["user_id"],raw_data[i]["cart_description"]]);
+    } 
+    return (cartarr);
+}
+//run
+CATEGORIES=catarr_creator();
+SAVED_CARTS=cartarr_creator();
+
+//alert(CATEGORIES);
+
 function load_page(){
     document.getElementById("sideline_left").innerHTML=mk_full_sideline(CATEGORIES);
+    add_to_cart([109847, "Green Bananasauce", "500g", "in a black box", 234987982, 00723, "10"]);
+    load_saved_cart_list(SAVED_CARTS);
     }
 
 window.addEventListener("load",load_page);
@@ -89,5 +118,6 @@ window.addEventListener("keypress", function (e) {
     if (key === 13) { // 13 is enter
       getSearchResults();
     }});
+    
     
     

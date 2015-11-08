@@ -65,7 +65,7 @@
           <div class="panel-heading">
             <h4><i class="fa fa-fw fa-user"></i> Log in</h4>
           </div>
-          <form class="form-horizontal" role="form">
+          <form class="form-horizontal" role="form" action="/main.html?user=#inputEmail3" method="post">
             <div class="form-group">
               <div class="col-sm-2">
                 <label for="inputEmail3" class="control-label">Email</label>
