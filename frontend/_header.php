@@ -49,13 +49,31 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
+                    <li
+                      <?php
+                        if (substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1) != "index.php" ){
+			                    echo  'class="hidden"';
+			                  }
+			                ?>  
+                    >
                         <a href="register.php">Register</a>
                     </li>
-                    <li>
+                    <li
+                      <?php
+                        if (substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1) === "index.php"){
+			                    echo  'class="hidden"';
+			                  }
+			                ?>  
+                    >
                         <a href="search.php">Search</a>
                     </li>
-                    <li class="dropdown">
+                    <li
+                      <?php
+                        if (substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1) === "index.php"){
+			                    echo  'class="hidden"';
+			                  }
+			                ?>  
+                    class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-shopping-cart"></span> 7 - Shopping Cart <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                            <li>

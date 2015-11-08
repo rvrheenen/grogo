@@ -147,11 +147,19 @@
             </div>
         </div>
         <div class="col-sm-10 col-md-10">
-            <div class="well">
-                <input type='text' id='search_input' placeholder='search...'></input>
-                <button type="button" id="cheapest_button"> Cheapest </button>
-                <button type="button" id="investigate_button"> Investigate </button>
+            <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4><i class="fa fa-fw fa-search"></i> Search for products</h4>
+          </div>
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <input type="email" class="form-control" id="search_input" placeholder="Search...">
+              <div class="buttons">
+                <button type="button" id="select_cheapest"><a href='#'>Take cheapest product</a></button>
+                <button type="button" id="select_search"><a href='#'>Search for product</a></button>
+              </div>
             </div>
+          </form>
         </div>
     </div>
 </div>

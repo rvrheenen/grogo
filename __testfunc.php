@@ -7,6 +7,12 @@
 		case 'searchsubcat':
 			$toreturn = searchSubCategories($_GET['value']);
 			break;
+		case 'searchproductcheap':
+			$toreturn = searchProductCheap($_GET['value']);
+			break;
+		case 'searchproductname':
+			$toreturn = searchProductName($_GET['value']);
+			break;
 		case 'getcarts':
 			$toreturn = getAllCarts($_GET['value']);
 			break;
@@ -24,6 +30,43 @@
 	echo json_encode($toreturn);
 	exit();
 
+	function searchProductCheap($value){
+		$product = mysqli_real_escape_string(db_connect(), $value);
+		
+		$query = sprintf(
+			"SELECT * FROM products p
+			WHERE p.price = (SELECT MIN(price) FROM products WHERE products.product_brand = '%s')
+			AND p.product_brand = '%s'", $product, $product
+		);
+		
+		$results = do_query($query);
+		
+		if ($results) {
+			$rows = parse_results($results);
+			return array("status"=>1, "title"=>"Success", "msg"=>"Succesfully search cheapest product", "results"=>$rows);
+		} else {
+			return array("status"=>0, "title"=>"Failure", "msg"=>"Failed to connect to server.");
+		}
+	}
+
+	function searchProductName($value){
+		$product = mysqli_real_escape_string(db_connect(), $value);
+		
+		$query = sprintf(
+			"SELECT * FROM products p
+			WHERE p.product_brand = '%s'", $product
+		);
+		
+		$results = do_query($query);
+		
+		if ($results) {
+			$rows = parse_results($results);
+			return array("status"=>1, "title"=>"Success", "msg"=>"Succesfully search product", "results"=>$rows);
+		} else {
+			return array("status"=>0, "title"=>"Failure", "msg"=>"Failed to connect to server.");
+		}
+	}
+
 	function saveCart($name, $userid, $value){
 		$ok = TRUE;
 		
@@ -33,7 +76,7 @@
 		
 		$products = explode(",",$value);
 		
-		foreach ($productid as $products){
+		foreach ($products as $productid){
 			$insert = sprintf("INSERT INTO cart_details (cart_id, product_id) VALUES (%u, %u)", $cartid, (int)$productid);
 			
 			$result = do_query($insert);
@@ -55,7 +98,21 @@
 		$results = do_query($query);
 		
 		if ($results){
-			$rows = parse_results($results);
+			$productids = parse_results($results);
+			
+			$rows = "";
+			
+			foreach ($productids as $product_id){
+				$query = sprintf("SELECT * FROM products p WHERE p.product_id = %u", (int)$product_id);
+				$result = do_query($query);
+				
+				if ($result){
+					$rows .= $result . ",";
+				} else {
+					return array("status"=>0, "title"=>"Failure", "msg"=>"Failed to retrieve cart product");
+				}
+			}
+			
 			return array("status"=>1, "title"=>"Success", "msg"=>"Succesfully get cart content", "results"=>$rows);
 		} else {
 			return array("status"=>0, "title"=>"Failure", "msg"=>"Failed to connect to server.");
@@ -158,14 +215,13 @@
 		while ($result = $results->fetch_assoc()) {
 			$keys = array_keys($result);
 			if ($i == 0) {
-				$row = array();
-				$row[] = $result[$keys[1]];
+				$row 	 = array();
+				$row[]   = $result[$keys[1]];
 				$prevRow = $result[$keys[0]];
 		    } else {
 		    	if ($result[$keys[0]] == $prevRow){ //if this category is same as previous
 		    		$row[] = $result[$keys[1]];
 		    	} else {
-		    		// echo '<pre>'.var_dump($result[$keys[0]], $result[$keys[1]]).'</pre>';
 		    	$rows[]  = array($result[$keys[0]] => $row);
 		    	$prevRow = $result[$keys[0]];
 		    	$row 	 = array();
