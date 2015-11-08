@@ -65,7 +65,7 @@
 			                  }
 			                ?>  
                     >
-                        <a href="search.php">Search</a>
+                        <a href="main.html">Search</a>
                     </li>
                     <li
                       <?php
@@ -79,7 +79,6 @@
                            <li>
                   <span class="item">
                     <span class="item-left">
-                        <img src="http://lorempixel.com/50/50/" alt="" />
                         <span class="item-info">
                             <span>Item name</span>
                             <span>23$</span>
@@ -93,7 +92,6 @@
               <li>
                   <span class="item">
                     <span class="item-left">
-                        <img src="http://lorempixel.com/50/50/" alt="" />
                         <span class="item-info">
                             <span>Item name</span>
                             <span>23$</span>
@@ -107,7 +105,6 @@
               <li>
                   <span class="item">
                     <span class="item-left">
-                        <img src="http://lorempixel.com/50/50/" alt="" />
                         <span class="item-info">
                             <span>Item name</span>
                             <span>23$</span>
@@ -121,7 +118,6 @@
               <li>
                   <span class="item">
                     <span class="item-left">
-                        <img src="http://lorempixel.com/50/50/" alt="" />
                         <span class="item-info">
                             <span>Item name</span>
                             <span>23$</span>

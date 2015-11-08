@@ -21,39 +21,47 @@
           </div>
           <form class="form-horizontal" role="form">
             <div class="form-group">
-              <div class="col-sm-2">
+              <div class="col-sm-3">
                 <label for="inputName3" class="control-label">Name</label>
               </div>
-              <div class="col-sm-10">
+              <div class="col-sm-9">
                 <input type="email" class="form-control" id="inputName3" placeholder="Name">
               </div>
             </div>
             <div class="form-group">
-              <div class="col-sm-2">
+              <div class="col-sm-3">
                 <label for="inputSurname3" class="control-label">Surname</label>
               </div>
-              <div class="col-sm-10">
+              <div class="col-sm-9">
                 <input type="email" class="form-control" id="inputSurname3" placeholder="Surname">
               </div>
             </div>
             <div class="form-group">
-              <div class="col-sm-2">
+              <div class="col-sm-3">
                 <label for="inputEmail3" class="control-label">Email</label>
               </div>
-              <div class="col-sm-10">
+              <div class="col-sm-9">
                 <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
               </div>
             </div>
             <div class="form-group">
-              <div class="col-sm-2">
+              <div class="col-sm-3">
                 <label for="inputPassword3" class="control-label">Password</label>
               </div>
-              <div class="col-sm-10">
+              <div class="col-sm-9">
                 <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
               </div>
             </div>
             <div class="form-group">
-              <div class="col-sm-offset-2 col-sm-10">
+              <div class="col-sm-3">
+                <label for="inputPasswordB3" class="control-label">Repeat Password</label>
+              </div>
+              <div class="col-sm-9">
+                <input type="password" class="form-control" id="inputPasswordB3" placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-3 col-sm-9">
                 <button type="submit" class="btn btn-default">Sign up</button>
               </div>
             </div>
@@ -71,13 +79,6 @@
 
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
-
-<!-- Script to Activate the Carousel -->
-<script>
-$('.carousel').carousel({
-interval: 5000 //changes the speed
-})
-</script>
 
 </body>
 

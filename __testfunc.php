@@ -34,16 +34,21 @@
 		$product = mysqli_real_escape_string(db_connect(), $value);
 		
 		$query = sprintf(
-			"SELECT * FROM products p
-			WHERE p.price = (SELECT MIN(price) FROM products WHERE products.product_brand = '%s')
+			"SELECT p.product_id FROM compare_prices p
+			WHERE p.ppu = (SELECT MIN(ppu) FROM compare_prices WHERE compare_prices.product_brand = '%s')
 			AND p.product_brand = '%s'", $product, $product
 		);
 		
 		$results = do_query($query);
 		
 		if ($results) {
-			$rows = parse_results($results);
-			return array("status"=>1, "title"=>"Success", "msg"=>"Succesfully search cheapest product", "results"=>$rows);
+			$product_id = parse_results($results);
+
+			$query = sprintf("SELECT * FROM products p WHERE p.product_id = %u", $product_id[0][key($product_id[0])]);
+			
+			$product = parse_results(do_query($query));
+			
+			return array("status"=>1, "title"=>"Success", "msg"=>"Succesfully search cheapest product", "results"=>$product);
 		} else {
 			return array("status"=>0, "title"=>"Failure", "msg"=>"Failed to connect to server.");
 		}
@@ -111,6 +116,7 @@
 				$query = sprintf("SELECT * FROM products p WHERE p.product_id = %u", $product_id[key($product_id)]);
 				
 				$product = parse_results(do_query($query));
+				
 				
 				if ($product){
 					$products[] = $product;

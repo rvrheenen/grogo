@@ -153,7 +153,7 @@
           </div>
           <form class="form-horizontal" role="form">
             <div class="form-group">
-              <input type="email" class="form-control" id="search_input" placeholder="Search...">
+              <input type="text" class="form-control" id="search_input" placeholder="Search...">
               <div class="buttons">
                 <button type="button" id="select_cheapest"><a href='#'>Take cheapest product</a></button>
                 <button type="button" id="select_search"><a href='#'>Search for product</a></button>
@@ -167,5 +167,37 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
+  $(function() {
+    var availableTags = [
+      "ActionScript",
+      "AppleScript",
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+    $( "#search_input" ).autocomplete({
+      source: availableTags,
+    });
+  });
+  </script>
 
 </html>
