@@ -33,8 +33,16 @@
 	echo json_encode($toreturn);
 	exit();
 	
-	function searchProducts($subcatid){
-		$query = sprintf("SELECT * 	FROM products WHERE products.subcategory_id = %u", int($subcatid));
+	function searchProducts($subcatname){
+		$query = sprintf("SELECT sub.subcategory_id FROM subcategories sub WHERE sub.subcategory_name = '%s'", $subcatname);
+		
+		$results = do_query($query);
+		
+		$row = parse_results($results);
+		
+		$subcatid = $row[0][key($row[0])];
+		
+		$query = sprintf("SELECT * 	FROM products WHERE products.subcategory_id = %u", (int)$subcatid);
 		
 		$results = do_query($query);
 

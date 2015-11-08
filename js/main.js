@@ -22,6 +22,15 @@ function getSearchResults(){
     var searchvalue = document.getElementById("fsearch").value;
     return (call_Server('GET','?action=searchproductname&value='+searchvalue));
 }
+function getSubCatList(subCat){
+    var list=[];
+    var raw_data=JSON.parse(call_Server('GET','?action=searchproducts&value='+subCat))["results"];
+    for (i=0; i<raw_data.length;i++){
+        list.push([raw_data[i]["product_id"],raw_data[i]["product_brand"],raw_data[i]["product_weight"],raw_data[i]["product_packaging"],raw_data[i]["subcategory_id"],raw_data[i]["supermarket_name"],raw_data[i]["price"]]);
+    } 
+    displayMainContainer(list);
+}
+
 // cart- functions
 function getCarts(uid){
     return (call_Server('GET','?action=getcarts&value='+uid));
@@ -89,7 +98,7 @@ function mk_sideline_element(header,entries){
      var new_entry=import_html("dep/main_sideline_element.html");
      var full_single="";
      for (i=0;i< entries.length ;i++){
-          full_single+=new_entry.replace("[entry-placeholder]",entries[i]);
+          full_single+=new_entry.replace("[entry-placeholder]",entries[i]).replace("[subcat-placeholder]","'"+entries[i]+"'");
      }
      return (next_element.replace("[table-placeholder]",full_single));
 }

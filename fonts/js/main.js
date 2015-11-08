@@ -3,8 +3,9 @@ Main Page
 result_element=[productID, productBrand, broductWeight, productPackaging, subcategoryID, supermarketID, price]
 CATEGORIES:
 GetCart=> [[CartID1,userID1,name1],[C2,UID2,N2]...]
-*/
 
+*/
+var mocklist=[["1298734", "cocal", "23g", "productPackaging", "subcategoryID", "supermarketID", "price"],["productID", "productBrand", "productWeight", "productPackaging", "subcategoryID", "supermarketID", "price"]]
 var CATEGORIES, listr, cart=[];
 var uid, SAVED_CARTS;
 uid="902909309";
@@ -19,9 +20,12 @@ function getCategories(){
 
 function getSearchResults(){
     var searchvalue = document.getElementById("fsearch").value;
-    listr = call_Server('GET','?action=searchsubcat&value='+searchvalue);
-    alert (listr);
+    return (call_Server('GET','?action=searchproductname&value='+searchvalue));
 }
+function getSubCatList(subCat){
+    displayMainContainer(call_Server('GET','?action=searchproducts&value='+subCat));
+}
+
 // cart- functions
 function getCarts(uid){
     return (call_Server('GET','?action=getcarts&value='+uid));
@@ -29,10 +33,12 @@ function getCarts(uid){
 
 function saveCart(uid){
     var name = prompt("Enter Cart name: ","");
-    var as_string;
+    var as_string="";
     for (i=0;i<cart.length;i++){
-        as_string=as_string+","+cart[i];
+        as_string=as_string+","+cart[i][0];
     }
+    as_string = as_string.substring(1,as_string.length);
+    alert(as_string);
     return (call_Server('GET','?action=savecarts&name='+name+'&value='+as_string+'&user='+uid));
 }
 
@@ -43,17 +49,31 @@ function getCartContent(cartID){
 function add_to_cart(item){
     cart.push(item);
     updateCart();
-    
 }
+
 function updateCart(){
     var full_entry="";
     var new_entry=import_html("dep/nav_cart_entry.html");
     for (i=0;i<cart.length;i++){
-        full_entry+=new_entry.replace("[name-placeholder]",cart[i][1]).replace("[price-placeholder]",cart[i][6]);
+        full_entry+=new_entry.replace("[name-placeholder]",cart[i][1]).replace("[price-placeholder]",cart[i][6]).replace("[position-placeholder]",i.toString());
     }
-    new_nav=document.getElementById("nav").innerHTML.replace("[cartlist-placeholder]",full_entry);
+    new_nav=import_html("dep/nav.html").replace("[cartlist-placeholder]",full_entry);
     document.getElementById("nav").innerHTML=new_nav;
-    alert("success");
+    load_saved_cart_list(SAVED_CARTS);
+    
+}
+
+function remove_from_cart(position){
+    var newc=[];
+    for (i=0;i<cart.length;i++){
+        if (i==parseInt(position)){
+          newc=newc;
+        }else{
+          newc.push(cart[i]);
+        }
+    }
+    cart = newc;
+    updateCart();
 }
 
 function load_saved_cart_list(cartlist){
@@ -73,7 +93,7 @@ function mk_sideline_element(header,entries){
      var new_entry=import_html("dep/main_sideline_element.html");
      var full_single="";
      for (i=0;i< entries.length ;i++){
-          full_single+=new_entry.replace("[entry-placeholder]",entries[i]);
+          full_single+=new_entry.replace("[entry-placeholder]",entries[i]).replace("[subcat-placeholder]","'"+entries[i]+"'");
      }
      return (next_element.replace("[table-placeholder]",full_single));
 }
@@ -107,12 +127,44 @@ function cartarr_creator(){
 function loadCart(cartid){
   cart=[];
   var raw_data=JSON.parse(getCartContent(cartid))["results"];
-  console.log(raw_data);
   for (i=0; i<raw_data.length;i++){
         cart.push([raw_data[i][0]["product_id"],raw_data[i][0]["product_brand"],raw_data[i][0]["product_weight"],raw_data[i][0]["product_packaging"],raw_data[i][0]["subcategory_id"],raw_data[i][0]["supermarket_name"],raw_data[i][0]["price"]]);
     } 
   updateCart();
   }
+  
+function displayMainContainer(main_list){
+    new_entry=import_html("dep/main_container_entry.html");
+    full_entry="";
+    for (i=0;i<main_list.length;i++){
+        full_entry+=new_entry.replace("[packaging]",main_list[i][1]).replace("[weight]",main_list[i][3]).replace("[brand-name]",main_list[i][1]).replace("[price]",main_list[i][6]).replace("[item-placeholder]","['" + main_list[i].join("','") + "']")
+    }
+    document.getElementById("main_container").innerHTML=full_entry;
+    
+}
+
+function cheapest(){
+    var list=[];
+    var raw_data=JSON.parse(getSearchResults())["results"];
+    for (i=0; i<raw_data.length;i++){
+        list.push([raw_data[i]["product_id"],raw_data[i]["product_brand"],raw_data[i]["product_weight"],raw_data[i]["product_packaging"],raw_data[i]["subcategory_id"],raw_data[i]["supermarket_name"],raw_data[i]["price"]]);
+    } 
+    var prices=[];
+    for (i=0; i<list.length; i++){
+        prices.push(parseInt(list[i][6]));
+    }
+    var cheapest = prices.indexOf(Math.min.apply(Math, prices));
+    add_to_cart(list[cheapest]);
+}
+
+function investigate(){
+    var list=[];
+    var raw_data=JSON.parse(getSearchResults())["results"];
+    for (i=0; i<raw_data.length;i++){
+        list.push([raw_data[i]["product_id"],raw_data[i]["product_brand"],raw_data[i]["product_weight"],raw_data[i]["product_packaging"],raw_data[i]["subcategory_id"],raw_data[i]["supermarket_name"],raw_data[i]["price"]]);
+    } 
+    displayMainContainer(list);
+    }
 //run
 CATEGORIES=catarr_creator();
 SAVED_CARTS=cartarr_creator();
@@ -121,8 +173,8 @@ SAVED_CARTS=cartarr_creator();
 
 function load_page(){
     document.getElementById("sideline_left").innerHTML=mk_full_sideline(CATEGORIES);
-    add_to_cart([109847, "Green Bananasauce", "500g", "in a black box", 234987982, 00723, "10"]);
     load_saved_cart_list(SAVED_CARTS);
+    displayMainContainer(mocklist);
     }
 
 window.addEventListener("load",load_page);
@@ -131,7 +183,7 @@ window.addEventListener("keypress", function (e) {
     //display(typin, "maincontainer");
     var key = e.which || e.keyCode;
     if (key === 13) { // 13 is enter
-      getSearchResults();
+      investigate();
     }});
     
     
