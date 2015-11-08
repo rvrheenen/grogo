@@ -2,17 +2,78 @@
 	$action = $_GET['action'];
 	switch ($action) {
 		case 'getcat':
-			$toreturn = getCategories();
+			$toreturn = getAllSubCategories();
 			break;
 		case 'searchsubcat':
 			$toreturn = searchSubCategories($_GET['value']);
+			break;
+		case 'getcarts':
+			$toreturn = getAllCarts($_GET['value']);
+			break;
+		case 'getcartcontent':
+			$toreturn = getCartContent($_GET['value']);
+			break;
+		case 'savecarts':
+			$toreturn = saveCart($_GET['name'], $_GET['user'], $_GET['value']);
 			break;	
 		default:
 			$toreturn = array("status"=>0, "title"=>"Forbidden", "msg"=>"Forbidden attempt at backend functionallity.");
 			break;
 	}
+	
 	echo json_encode($toreturn);
 	exit();
+
+	function saveCart($name, $userid, $value){
+		$ok = TRUE;
+		
+		$query = sprintf("SELECT create_cart(%u,'%s')", (int)$userid, $name);
+		
+		$cartid = do_query($query);
+		
+		$products = explode(",",$value);
+		
+		foreach ($productid as $products){
+			$insert = sprintf("INSERT INTO cart_details (cart_id, product_id) VALUES (%u, %u)", $cartid, (int)$productid);
+			
+			$result = do_query($insert);
+			
+			if (!$result){
+				$ok = FALSE;
+				return array ("status"=>0, "title"=>"Failure", "msg"=>"Failed to connect to server.");
+			}
+		}
+		
+		if ($ok == TRUE){
+			return array("status"=>1, "title"=>"Success", "msg"=>"Cart saved successful.");
+		}
+	}
+
+	function getCartContent($cartid){
+		$query = sprintf("SELECT cd.product_id FROM cart_details cd WHERE cd.user_id = %u", (int)$cartid);
+		
+		$results = do_query($query);
+		
+		if ($results){
+			$rows = parse_results($results);
+			return array("status"=>1, "title"=>"Success", "msg"=>"Succesfully get cart content", "results"=>$rows);
+		} else {
+			return array("status"=>0, "title"=>"Failure", "msg"=>"Failed to connect to server.");
+		}
+	}
+
+	function getAllCarts($userid){
+		$query = sprintf("SELECT * FROM carts WHERE carts.user_id = %u", (int)$userid);
+		
+		$results = do_query($query);
+		
+		if ($results){
+			$rows = parse_results($results);
+			return array("status"=>1, "title"=>"Success", "msg"=>"Succesfully get all carts", "results"=>$rows);
+		} else {
+			return array("status"=>0, "title"=>"Failure", "msg"=>"Failed to connect to server.");
+		}
+	}
 
 	function getCategories(){
 		$query = sprintf("SELECT * 	FROM categories");
@@ -46,6 +107,24 @@
 		}
 	}
 
+	function getAllSubCategories(){
+		$query = sprintf(
+			"SELECT c.category_name, s.subcategory_name
+			FROM categories c
+			JOIN subcategories s 
+			ON c.category_id = s.category_id"
+		);
+		
+		$results = do_query($query);
+
+		if ($results){
+			$rows = parse_categories($results);
+			return array("status"=>1, "title"=>"Success", "msg"=>"Succesfully retrieved subcategories.", "results"=>$rows);
+		} else {
+			return array("status"=>0, "title"=>"Failure", "msg"=>"Failed to connect to server.");
+		}	
+	}
+
 	function db_connect(){		
 		static $connection;
 		
@@ -72,5 +151,29 @@
 		return $rows;
 	}
 
-
+	function parse_categories($results){
+		$rows = array();
+		$i = 0;
+		$prevRow = 0;
+		while ($result = $results->fetch_assoc()) {
+			$keys = array_keys($result);
+			if ($i == 0) {
+				$row = array();
+				$row[] = $result[$keys[1]];
+				$prevRow = $result[$keys[0]];
+		    } else {
+		    	if ($result[$keys[0]] == $prevRow){ //if this category is same as previous
+		    		$row[] = $result[$keys[1]];
+		    	} else {
+		    		// echo '<pre>'.var_dump($result[$keys[0]], $result[$keys[1]]).'</pre>';
+		    	$rows[]  = array($result[$keys[0]] => $row);
+		    	$prevRow = $result[$keys[0]];
+		    	$row 	 = array();
+		    	$row[]   = $result[$keys[1]];
+		    	}
+		    }
+		    $i++;	
+		}
+		return $rows;
+	}
 ?>

@@ -2,47 +2,162 @@
 <html lang="en">
 
 <?php include '_header.php' ?>
-<div class="container-fluid">
-  <h2>Vertical Sidebar - Accordion Menu</h2>
-  
-  <hr>
-  
-  <div class="row">
-    <div class="col-md-2">
-      
-      <!-- menu -->
-      <div id="MainMenu">
-        <div class="list-group panel">
-          <a href="#" class="list-group-item list-group-item-success" data-parent="#MainMenu">Item 1</a>
-          <a href="#" class="list-group-item list-group-item-success" data-parent="#MainMenu">Item 2</a>
-          <a href="#demo3" class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#MainMenu">Item 3 <i class="fa fa-caret-down"></i></a>
-          <div class="collapse" id="demo3">
-            <a href="#SubMenu1" class="list-group-item" data-toggle="collapse" data-parent="#SubMenu1">Subitem 1 <i class="fa fa-caret-down"></i></a>
-            <div class="collapse list-group-submenu" id="SubMenu1">
-              <a href="#" class="list-group-item" data-parent="#SubMenu1">Subitem 1 a</a>
-              <a href="#" class="list-group-item" data-parent="#SubMenu1">Subitem 2 b</a>
-              <a href="#SubSubMenu1" class="list-group-item" data-toggle="collapse" data-parent="#SubSubMenu1">Subitem 3 c <i class="fa fa-caret-down"></i></a>
-              <div class="collapse list-group-submenu list-group-submenu-1" id="SubSubMenu1">
-                <a href="#" class="list-group-item" data-parent="#SubSubMenu1">Sub sub item 1</a>
-                <a href="#" class="list-group-item" data-parent="#SubSubMenu1">Sub sub item 2</a>
-              </div>
-              <a href="#" class="list-group-item" data-parent="#SubMenu1">Subitem 4 d</a>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2 col-md-2">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-folder-close">
+                            </span>Content</a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="http://www.jquery2dotnet.com">Articles</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-flash text-success"></span><a href="http://www.jquery2dotnet.com">News</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-file text-info"></span><a href="http://www.jquery2dotnet.com">Newsletters</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-comment text-success"></span><a href="http://www.jquery2dotnet.com">Comments</a>
+                                        <span class="badge">42</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-th">
+                            </span>Modules</a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <a href="http://www.jquery2dotnet.com">Orders</a> <span class="label label-success">$ 320</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a href="http://www.jquery2dotnet.com">Invoices</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a href="http://www.jquery2dotnet.com">Shipments</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a href="http://www.jquery2dotnet.com">Tex</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="glyphicon glyphicon-user">
+                            </span>Account</a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <a href="http://www.jquery2dotnet.com">Change Password</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a href="http://www.jquery2dotnet.com">Notifications</a> <span class="label label-info">5</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a href="http://www.jquery2dotnet.com">Import/Export</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-trash text-danger"></span><a href="http://www.jquery2dotnet.com" class="text-danger">
+                                            Delete Account</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-file">
+                            </span>Reports</a>
+                        </h4>
+                    </div>
+                    <div id="collapseFour" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-usd"></span><a href="http://www.jquery2dotnet.com">Sales</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-user"></span><a href="http://www.jquery2dotnet.com">Customers</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-tasks"></span><a href="http://www.jquery2dotnet.com">Products</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-shopping-cart"></span><a href="http://www.jquery2dotnet.com">Shopping Cart</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <a href="javascript:;" class="list-group-item">Subitem 2</a>
-            <a href="javascript:;" class="list-group-item">Subitem 3</a>
-          </div>
-          <a href="#demo4" class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#MainMenu">Item 4  <i class="fa fa-caret-down"></i></a>
-          <div class="collapse" id="demo4">
-            <a href="" class="list-group-item">Subitem 1</a>
-            <a href="" class="list-group-item">Subitem 2</a>
-            <a href="" class="list-group-item">Subitem 3</a>
-          </div>
         </div>
-      </div>
+        <div class="col-sm-10 col-md-10">
+            <div class="well">
+                <input type='text' id='search_input' placeholder='search...'></input>
+                <button type="button" id="cheapest_button"> Cheapest </button>
+                <button type="button" id="investigate_button"> Investigate </button>
+            </div>
+        </div>
     </div>
-  </div>
-    
 </div>
-<script src="js/bootstrap.min.css"></script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 
 </html>

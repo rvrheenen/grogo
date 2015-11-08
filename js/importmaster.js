@@ -17,18 +17,9 @@ function import_html(filename) {
     ic.send();
     return (ic.responseText);
 }
-function add_uid_to_links(){
-     document.getElementById("homeLink").href = "Home.html?uid="+UID;
-     document.getElementById("chatLink").href = "Chat.html?uid="+UID;
-     document.getElementById("profileLink").href = "Profile.html?uid="+UID;
-     document.getElementById("questLink").href = "Quest.html?uid="+UID;
-     document.getElementById("logoutLink").href = "Logout.html?uid="+UID;
-     document.getElementById("settingsLink").href = "Settings.html?uid="+UID;
-}
 
 function show_topline(){
    document.getElementById("topline").innerHTML=import_html("global_header.html"); // Needs a div called "topline" right after body tags.
-   add_uid_to_links();
 }
 
 window.addEventListener("load", show_topline);
