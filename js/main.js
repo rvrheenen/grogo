@@ -29,10 +29,12 @@ function getCarts(uid){
 
 function saveCart(uid){
     var name = prompt("Enter Cart name: ","");
-    var as_string;
+    var as_string="";
     for (i=0;i<cart.length;i++){
-        as_string=as_string+","+cart[i];
+        as_string=as_string+","+cart[i][0];
     }
+    as_string = as_string.substring(1,as_string.length);
+    alert(as_string);
     return (call_Server('GET','?action=savecarts&name='+name+'&value='+as_string+'&user='+uid));
 }
 

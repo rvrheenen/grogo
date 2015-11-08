@@ -20,8 +20,7 @@ function getCategories(){
 
 function getSearchResults(){
     var searchvalue = document.getElementById("fsearch").value;
-    listr = call_Server('GET','?action=searchsubcat&value='+searchvalue);
-    alert (listr);
+    return (call_Server('GET','?action=searchproductname&value='+searchvalue));
 }
 // cart- functions
 function getCarts(uid){
@@ -32,7 +31,7 @@ function saveCart(uid){
     var name = prompt("Enter Cart name: ","");
     var as_string;
     for (i=0;i<cart.length;i++){
-        as_string=as_string+","+cart[i];
+        as_string=as_string+","+cart[i][0];
     }
     return (call_Server('GET','?action=savecarts&name='+name+'&value='+as_string+'&user='+uid));
 }
@@ -137,6 +136,29 @@ function displayMainContainer(main_list){
     document.getElementById("main_container").innerHTML=full_entry;
     
 }
+
+function cheapest(){
+    var list=[];
+    var raw_data=JSON.parse(getSearchResults())["results"];
+    for (i=0; i<raw_data.length;i++){
+        list.push([raw_data[i]["product_id"],raw_data[i]["product_brand"],raw_data[i]["product_weight"],raw_data[i]["product_packaging"],raw_data[i]["subcategory_id"],raw_data[i]["supermarket_name"],raw_data[i]["price"]]);
+    } 
+    var prices=[];
+    for (i=0; i<list.length; i++){
+        prices.push(parseInt(list[i][6]));
+    }
+    var cheapest = prices.indexOf(Math.min.apply(Math, prices));
+    add_to_cart(list[cheapest]);
+}
+
+function investigate(){
+    var list=[];
+    var raw_data=JSON.parse(getSearchResults())["results"];
+    for (i=0; i<raw_data.length;i++){
+        list.push([raw_data[i]["product_id"],raw_data[i]["product_brand"],raw_data[i]["product_weight"],raw_data[i]["product_packaging"],raw_data[i]["subcategory_id"],raw_data[i]["supermarket_name"],raw_data[i]["price"]]);
+    } 
+    displayMainContainer(list);
+    }
 //run
 CATEGORIES=catarr_creator();
 SAVED_CARTS=cartarr_creator();
@@ -155,7 +177,7 @@ window.addEventListener("keypress", function (e) {
     //display(typin, "maincontainer");
     var key = e.which || e.keyCode;
     if (key === 13) { // 13 is enter
-      getSearchResults();
+      investigate();
     }});
     
     

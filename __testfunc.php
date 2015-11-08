@@ -100,15 +100,17 @@
 		$products = explode(",",$value);
 		
 		foreach ($products as $productid){
-			$insert = sprintf("INSERT INTO cart_details (cart_id, product_id) VALUES (%u, %u)", $results[0][key($results[0])], (int)$productid);
-			
-			$result = do_query($insert);
-			
-			if (!$result){
-				$ok = FALSE;
-				$query = sprintf("SELECT delete_cart(%u)", $results[0][key($results[0])]);
-				$result = do_query($query);
-				return array ("status"=>0, "title"=>"Failure", "msg"=>"Failed to save the cart.");
+			if($productid){
+				$insert = sprintf("INSERT INTO cart_details (cart_id, product_id) VALUES (%u, %u)", $results[0][key($results[0])], (int)$productid);
+				
+				$result = do_query($insert);
+				
+				if (!$result){
+					$ok = FALSE;
+					$query = sprintf("SELECT delete_cart(%u)", $results[0][key($results[0])]);
+					$result = do_query($query);
+					return array ("status"=>0, "title"=>"Failure", "msg"=>"Failed to save the cart.");
+				}
 			}
 		}
 		
