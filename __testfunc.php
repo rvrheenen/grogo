@@ -81,10 +81,14 @@
 	function searchProductName($value){
 		$product = mysqli_real_escape_string(db_connect(), $value);
 		
-		$query = sprintf(
+		if (strtolower($product) == 'beer'){
+			$query = " SELECT * FROM products p
+			WHERE p.product_brand = 'Heineken' OR p.product_brand = 'Amstel' OR p.product_brand = 'Hertog Jan'";
+		} else {
+			$query = sprintf(
 			"SELECT * FROM products p
-			WHERE p.product_brand = '%s'", $product
-		);
+			WHERE p.product_brand = '%s'", $product);
+		}
 		
 		$results = do_query($query);
 		
@@ -99,7 +103,7 @@
 	function saveCart($name, $userid, $value){
 		$ok = TRUE;
 		
-		$query = sprintf("SELECT create_cart(%u,'%s')", (int)$userid, $name);
+		$query = sprintf("SELECT create_cart(%u,'%s')", 902909309, $name);
 		
 		$cartid = do_query($query);
 		

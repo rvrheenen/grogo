@@ -179,7 +179,7 @@ SAVED_CARTS=cartarr_creator();
 function load_page(){
     document.getElementById("sideline_left").innerHTML=mk_full_sideline(CATEGORIES);
     load_saved_cart_list(SAVED_CARTS);
-    displayMainContainer(mocklist);
+    //displayMainContainer(mocklist);
     }
 
 window.addEventListener("load",load_page);
